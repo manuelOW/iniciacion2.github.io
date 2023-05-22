@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Estilo de pintor aleatorio con DeepAI Image API</title>
@@ -18,53 +19,53 @@
       <button type="button" onclick="procesarImagen()">Procesar imagen</button>
     </form>
     <div id="resultado"></div>
-php
-Copy code
-<script>
-  async function procesarImagen() {
-    const archivo = document.getElementById('imagen').files[0];
-    if (!archivo) {
-      alert('Por favor, seleccione una imagen para procesar.');
-      return;
-    }
 
-    const lector = new FileReader();
-    lector.readAsDataURL(archivo);
+    <script>
+      async function procesarImagen() {
+        const archivo = document.getElementById('imagen').files[0];
+        if (!archivo) {
+          alert('Por favor, seleccione una imagen para procesar.');
+          return;
+        }
 
-    lector.onload = async () => {
-      const imagenBase64 = lector.result.split(',')[1];
+        const lector = new FileReader();
 
-      const estilo = document.getElementById('estilo').value;
+        lector.onload = async () => {
+          const imagenBase64 = lector.result.split(',')[1];
 
-      const response = await fetch('https://api.deepai.org/api/neural-style', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Api-Key': 'fe10a5a6-bccd-410e-a138-c43f99b62ce5',
-        },
-        body: new URLSearchParams({
-          content: imagenBase64,
-          style: estilo,
-        }).toString(),
-      });
+          const estilo = document.getElementById('estilo').value;
 
-      const data = await response.json();
+          const response = await fetch('https://api.deepai.org/api/neural-style', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'api-key': 'fe10a5a6-bccd-410e-a138-c43f99b62ce5',
+            },
+            body: new URLSearchParams({
+              content: imagenBase64,
+              style: estilo,
+            }),
+          });
 
-      const imagenResultado = new Image();
-      imagenResultado.src = data.output_url;
+          const data = await response.json();
 
-      document.getElementById('resultado').innerHTML = '';
+          const imagenResultado = new Image();
+          imagenResultado.src = data.output_url;
 
-      const enlaceDescarga = document.createElement('a');
-      enlaceDescarga.download = 'imagen-procesada.jpg';
-      enlaceDescarga.href = imagenResultado.src;
-      enlaceDescarga.innerHTML = 'Descargar imagen';
+          document.getElementById('resultado').innerHTML = '';
 
-      document.getElementById('resultado').appendChild(imagenResultado);
-      document.getElementById('resultado').appendChild(document.createElement('br'));
-      document.getElementById('resultado').appendChild(enlaceDescarga);
-    };
-  }
-</script>
+          const enlaceDescarga = document.createElement('a');
+          enlaceDescarga.download = 'imagen-procesada.jpg';
+          enlaceDescarga.href = imagenResultado.src;
+          enlaceDescarga.innerHTML = 'Descargar imagen';
+
+          document.getElementById('resultado').appendChild(imagenResultado);
+          document.getElementById('resultado').appendChild(document.createElement('br'));
+          document.getElementById('resultado').appendChild(enlaceDescarga);
+        };
+
+        lector.readAsDataURL(archivo);
+      }
+    </script>
   </body>
 </html>
