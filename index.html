@@ -14,6 +14,9 @@
   <div id="resultado"></div>
 
   <script>
+    let imagenResultado;
+    let estiloSeleccionado;
+
     async function procesarImagen() {
       // Obtener la imagen cargada
       const archivo = document.getElementById('imagen').files[0];
@@ -31,7 +34,7 @@
 
         // Obtener un estilo aleatorio
         const estilos = ["cubismo", "surrealismo", "art deco", "anime"];
-        const estiloSeleccionado = estilos[Math.floor(Math.random() * estilos.length)];
+        estiloSeleccionado = estilos[Math.floor(Math.random() * estilos.length)];
 
         // Hacer la solicitud a DeepAI Image API
         const formData = new FormData();
@@ -50,14 +53,12 @@
         console.log(data);
 
         // Mostrar el resultado en la página web
-        const imagenResultado = new Image();
+        imagenResultado = new Image();
         imagenResultado.src = data.output_url;
         document.getElementById('resultado').innerHTML = '';
 
-        // Crear un enlace de descarga para la imagen procesada
+        // Crear un enlace de descarga para la imagen procesada (solo si el estilo es correcto)
         const enlaceDescarga = document.createElement('a');
-        enlaceDescarga.download = 'imagen-procesada.jpg';
-        enlaceDescarga.href = imagenResultado.src;
         enlaceDescarga.innerHTML = 'Descargar imagen';
         document.getElementById('resultado').appendChild(imagenResultado);
         document.getElementById('resultado').appendChild(document.createElement('br'));
@@ -69,7 +70,7 @@
           const boton = document.createElement('button');
           boton.innerHTML = estilos[i];
           boton.onclick = function() {
-            verificarEstilo(i, estiloSeleccionado);
+            verificarEstilo(i);
           };
           botonesEstilo.appendChild(boton);
         }
@@ -81,13 +82,19 @@
       };
     }
 
-    function verificarEstilo(estiloBoton, estiloSeleccionado) {
+    function verificarEstilo(estiloBoton) {
       const estilos = ["cubismo", "surrealismo", "art deco", "anime"];
       const estiloActual = estilos[estiloBoton];
       if (estiloActual === estiloSeleccionado) {
-        alert('¡El estilo del botón seleccionado coincide con el estilo de la foto!');
+        alert("¡Has seleccionado el estilo correcto!");
+        const enlaceDescarga = document.querySelector("#resultado a");
+        enlaceDescarga.download = 'imagen-procesada.jpg';
+        enlaceDescarga.href = imagenResultado.src;
       } else {
-        alert('El estilo del botón seleccionado no coincide con el estilo de la foto.');
+        alert("El estilo seleccionado no coincide con el estilo de la imagen procesada.");
+        const enlaceDescarga = document.querySelector("#resultado a");
+        enlaceDescarga.removeAttribute('download');
+        enlaceDescarga.removeAttribute('href');
       }
     }
   </script>
