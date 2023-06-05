@@ -40,9 +40,9 @@
         // Hacer la solicitud a DeepAI Image API
         const formData = new FormData();
         formData.append("image", archivo);
-        formData.append("text", new Blob([estiloSeleccionado], { type: "text/plain" }));
+        formData.append("style", JSON.stringify({ text: estiloSeleccionado }));
 
-        const response = await fetch('https://api.deepai.org/api/image-editor', {
+        const response = await fetch('https://api.deepai.org/api/deepai', {
           method: 'POST',
           headers: {
             'api-key': 'fe10a5a6-bccd-410e-a138-c43f99b62ce5',
