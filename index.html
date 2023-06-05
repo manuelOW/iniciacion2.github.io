@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Estilo de pintor aleatorio con DeepAI Image API</title>
-  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcode/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
   <h1>Estilo de pintor aleatorio con DeepAI Image API</h1>
@@ -58,6 +58,10 @@
         imagenResultado.src = data.output_url;
         document.getElementById('resultado').innerHTML = '';
 
+        // Mostrar la imagen procesada
+        document.getElementById('resultado').appendChild(imagenResultado);
+        document.getElementById('resultado').appendChild(document.createElement('br'));
+
         // Mostrar botones para cada estilo posible
         const botonesEstilo = document.createElement('div');
         for (let i = 0; i < estilos.length; i++) {
@@ -68,8 +72,6 @@
           };
           botonesEstilo.appendChild(boton);
         }
-        document.getElementById('resultado').appendChild(imagenResultado);
-        document.getElementById('resultado').appendChild(document.createElement('br'));
         document.getElementById('resultado').appendChild(botonesEstilo);
       };
     }
@@ -82,12 +84,11 @@
         const qrContainer = document.createElement('div');
         qrContainer.id = 'qr-container';
         document.getElementById('resultado').appendChild(qrContainer);
-        const qrCode = new QRCode(qrContainer, {
+        const qrCode = new QRCode(document.getElementById('qr-container'), {
           text: imagenResultado.src,
-          width: 200,
-          height: 200,
+          width: 128,
+          height: 128,
         });
-        window.location.href = imagenResultado.src; // Redirigir a la página de la imagen procesada
       } else {
         alert("El estilo seleccionado no coincide con el estilo de la imagen procesada.");
       }
