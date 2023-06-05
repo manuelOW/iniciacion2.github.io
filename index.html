@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Estilo de pintor aleatorio con DeepAI Image API</title>
-  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
 </head>
 <body>
   <h1>Estilo de pintor aleatorio con DeepAI Image API</h1>
@@ -17,6 +17,7 @@
   <script>
     let imagenResultado;
     let estiloSeleccionado;
+    let qrCode;
 
     async function procesarImagen() {
       // Obtener la imagen cargada
@@ -56,39 +57,22 @@
         // Mostrar el resultado en la página web
         imagenResultado = new Image();
         imagenResultado.src = data.output_url;
-        document.getElementById('resultado').innerHTML = '';
-
-        // Crear un enlace de descarga para la imagen procesada (solo si el estilo es correcto)
-        const enlaceDescarga = document.createElement('a');
-        enlaceDescarga.innerHTML = 'Descargar imagen';
-        document.getElementById('resultado').appendChild(imagenResultado);
-        document.getElementById('resultado').appendChild(document.createElement('br'));
-        document.getElementById('resultado').appendChild(enlaceDescarga);
-
-        // Generar código QR para el enlace de descarga
-        const qrCodeDiv = document.createElement('div');
-        const qr = new QRious({
-          element: qrCodeDiv,
-          value: imagenResultado.src,
-          size: 200,
-        });
-        document.getElementById('resultado').appendChild(qrCodeDiv);
-
-        // Mostrar botones para cada estilo posible
-        const botonesEstilo = document.createElement('div');
-        for (let i = 0; i < estilos.length; i++) {
-          const boton = document.createElement('button');
-          boton.innerHTML = estilos[i];
-          boton.onclick = function() {
-            verificarEstilo(i);
-          };
-          botonesEstilo.appendChild(boton);
-        }
-        document.getElementById('resultado').appendChild(botonesEstilo);
-
-        // Guardar la selección de estilo en una variable numérica
-        const estiloNumerico = estilos.indexOf(estiloSeleccionado);
-        console.log("Selección de estilo numérico:", estiloNumerico);
+        imagenResultado.onload = function() {
+          document.getElementById('resultado').innerHTML = '';
+          document.getElementById('resultado').appendChild(imagenResultado);
+          
+          // Mostrar botones para cada estilo posible
+          const botonesEstilo = document.createElement('div');
+          for (let i = 0; i < estilos.length; i++) {
+            const boton = document.createElement('button');
+            boton.innerHTML = estilos[i];
+            boton.onclick = function() {
+              verificarEstilo(i);
+            };
+            botonesEstilo.appendChild(boton);
+          }
+          document.getElementById('resultado').appendChild(botonesEstilo);
+        };
       };
     }
 
@@ -97,14 +81,23 @@
       const estiloActual = estilos[estiloBoton];
       if (estiloActual === estiloSeleccionado) {
         alert("¡Has seleccionado el estilo correcto!");
-        const enlaceDescarga = document.querySelector("#resultado a");
-        enlaceDescarga.download = 'imagen-procesada.jpg';
-        enlaceDescarga.href = imagenResultado.src;
+        const qrCodeDiv = document.createElement('div');
+        qrCodeDiv.id = 'qrCode';
+        document.getElementById('resultado').appendChild(qrCodeDiv);
+        qrCode = new QRCode(qrCodeDiv, {
+          text: imagenResultado.src,
+          width: 200,
+          height: 200
+        });
       } else {
         alert("El estilo seleccionado no coincide con el estilo de la imagen procesada.");
-        const enlaceDescarga = document.querySelector("#resultado a");
-        enlaceDescarga.removeAttribute('download');
-        enlaceDescarga.removeAttribute('href');
+        if (qrCode) {
+          qrCode.clear();
+          const qrCodeDiv = document.getElementById('qrCode');
+          if (qrCodeDiv) {
+            qrCodeDiv.parentNode.removeChild(qrCodeDiv);
+          }
+        }
       }
     }
   </script>
