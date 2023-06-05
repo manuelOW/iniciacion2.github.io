@@ -58,19 +58,24 @@
         imagenResultado.src = data.output_url;
         document.getElementById('resultado').innerHTML = '';
 
-        // Mostrar el código QR
-        const qrContainer = document.createElement('div');
-        qrContainer.id = 'qr-container';
-        document.getElementById('resultado').appendChild(imagenResultado);
-        document.getElementById('resultado').appendChild(document.createElement('br'));
-        document.getElementById('resultado').appendChild(qrContainer);
+        // Mostrar el código QR solo si la selección es correcta
+        if (estilos.indexOf(estiloSeleccionado) !== -1) {
+          // Mostrar la imagen procesada
+          document.getElementById('resultado').appendChild(imagenResultado);
+          document.getElementById('resultado').appendChild(document.createElement('br'));
 
-        // Generar el código QR
-        const qrCode = new QRCode(document.getElementById('qr-container'), {
-          text: window.location.href,
-          width: 200,
-          height: 200,
-        });
+          // Mostrar el código QR
+          const qrContainer = document.createElement('div');
+          qrContainer.id = 'qr-container';
+          document.getElementById('resultado').appendChild(qrContainer);
+
+          // Generar el código QR con el enlace de descarga de la foto procesada
+          const qrCode = new QRCode(qrContainer, {
+            text: data.output_url,
+            width: 200,
+            height: 200,
+          });
+        }
 
         // Mostrar botones para cada estilo posible
         const botonesEstilo = document.createElement('div');
@@ -98,7 +103,7 @@
         const qrContainer = document.getElementById('qr-container');
         qrContainer.innerHTML = ''; // Eliminar el código QR existente
         const qrCode = new QRCode(qrContainer, {
-          text: window.location.href,
+          text: imagenResultado.src,
           width: 200,
           height: 200,
         });
