@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Estilo de pintor aleatorio con DeepAI Image API</title>
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
   <h1>Estilo de pintor aleatorio con DeepAI Image API</h1>
@@ -33,7 +34,7 @@
         const imagenBase64 = lector.result.split(',')[1];
 
         // Obtener un estilo aleatorio
-        const estilos = ["cubismo", "surrealismo", "art noveau", "anime"];
+        const estilos = ["cubismo", "surrealismo", "art deco", "anime"];
         estiloSeleccionado = estilos[Math.floor(Math.random() * estilos.length)];
 
         // Hacer la solicitud a DeepAI Image API
@@ -57,12 +58,19 @@
         imagenResultado.src = data.output_url;
         document.getElementById('resultado').innerHTML = '';
 
-        // Crear un enlace de descarga para la imagen procesada (solo si el estilo es correcto)
-        const enlaceDescarga = document.createElement('a');
-        enlaceDescarga.innerHTML = 'Descargar imagen';
+        // Mostrar el código QR
+        const qrContainer = document.createElement('div');
+        qrContainer.id = 'qr-container';
         document.getElementById('resultado').appendChild(imagenResultado);
         document.getElementById('resultado').appendChild(document.createElement('br'));
-        document.getElementById('resultado').appendChild(enlaceDescarga);
+        document.getElementById('resultado').appendChild(qrContainer);
+
+        // Generar el código QR
+        const qrCode = new QRCode(document.getElementById('qr-container'), {
+          text: window.location.href,
+          width: 200,
+          height: 200,
+        });
 
         // Mostrar botones para cada estilo posible
         const botonesEstilo = document.createElement('div');
@@ -87,14 +95,17 @@
       const estiloActual = estilos[estiloBoton];
       if (estiloActual === estiloSeleccionado) {
         alert("¡Has seleccionado el estilo correcto!");
-        const enlaceDescarga = document.querySelector("#resultado a");
-        enlaceDescarga.download = 'imagen-procesada.jpg';
-        enlaceDescarga.href = imagenResultado.src;
+        const qrContainer = document.getElementById('qr-container');
+        qrContainer.innerHTML = ''; // Eliminar el código QR existente
+        const qrCode = new QRCode(qrContainer, {
+          text: window.location.href,
+          width: 200,
+          height: 200,
+        });
       } else {
         alert("El estilo seleccionado no coincide con el estilo de la imagen procesada.");
-        const enlaceDescarga = document.querySelector("#resultado a");
-        enlaceDescarga.removeAttribute('download');
-        enlaceDescarga.removeAttribute('href');
+        const qrContainer = document.getElementById('qr-container');
+        qrContainer.innerHTML = ''; // Eliminar el código QR existente
       }
     }
   </script>
