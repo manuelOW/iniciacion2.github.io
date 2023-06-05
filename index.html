@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Estilo de pintor aleatorio con DeepAI Image API</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 </head>
 <body>
   <h1>Estilo de pintor aleatorio con DeepAI Image API</h1>
@@ -63,6 +64,15 @@
         document.getElementById('resultado').appendChild(imagenResultado);
         document.getElementById('resultado').appendChild(document.createElement('br'));
         document.getElementById('resultado').appendChild(enlaceDescarga);
+
+        // Generar código QR para el enlace de descarga
+        const qrCodeDiv = document.createElement('div');
+        const qr = new QRious({
+          element: qrCodeDiv,
+          value: imagenResultado.src,
+          size: 200,
+        });
+        document.getElementById('resultado').appendChild(qrCodeDiv);
 
         // Mostrar botones para cada estilo posible
         const botonesEstilo = document.createElement('div');
