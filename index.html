@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Estilo de pintor aleatorio con DeepAI Image API</title>
-  <script src="https://cdn.rawgit.com/davidshimjs/qrcode/gh-pages/qrcode.min.js"></script>
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
   <h1>Estilo de pintor aleatorio con DeepAI Image API</h1>
@@ -58,9 +58,19 @@
         imagenResultado.src = data.output_url;
         document.getElementById('resultado').innerHTML = '';
 
-        // Mostrar la imagen procesada
+        // Mostrar el código QR
+        const qrContainer = document.createElement('div');
+        qrContainer.id = 'qr-container';
         document.getElementById('resultado').appendChild(imagenResultado);
         document.getElementById('resultado').appendChild(document.createElement('br'));
+        document.getElementById('resultado').appendChild(qrContainer);
+
+        // Generar el código QR
+        const qrCode = new QRCode(document.getElementById('qr-container'), {
+          text: window.location.href,
+          width: 200,
+          height: 200,
+        });
 
         // Mostrar botones para cada estilo posible
         const botonesEstilo = document.createElement('div');
@@ -73,6 +83,10 @@
           botonesEstilo.appendChild(boton);
         }
         document.getElementById('resultado').appendChild(botonesEstilo);
+
+        // Guardar la selección de estilo en una variable numérica
+        const estiloNumerico = estilos.indexOf(estiloSeleccionado);
+        console.log("Selección de estilo numérico:", estiloNumerico);
       };
     }
 
@@ -81,16 +95,17 @@
       const estiloActual = estilos[estiloBoton];
       if (estiloActual === estiloSeleccionado) {
         alert("¡Has seleccionado el estilo correcto!");
-        const qrContainer = document.createElement('div');
-        qrContainer.id = 'qr-container';
-        document.getElementById('resultado').appendChild(qrContainer);
-        const qrCode = new QRCode(document.getElementById('qr-container'), {
-          text: imagenResultado.src,
-          width: 128,
-          height: 128,
+        const qrContainer = document.getElementById('qr-container');
+        qrContainer.innerHTML = ''; // Eliminar el código QR existente
+        const qrCode = new QRCode(qrContainer, {
+          text: window.location.href,
+          width: 200,
+          height: 200,
         });
       } else {
         alert("El estilo seleccionado no coincide con el estilo de la imagen procesada.");
+        const qrContainer = document.getElementById('qr-container');
+        qrContainer.innerHTML = ''; // Eliminar el código QR existente
       }
     }
   </script>
