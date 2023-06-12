@@ -72,7 +72,7 @@ function verificarEstilo(estiloBoton) {
       width: 200,
       height: 200
     });
-    document.getElementById('resultado').classList.add('fireworks-animation');
+    imagenResultado.classList.add('fireworks-animation');
   } else {
     alert("El estilo seleccionado no coincide con el estilo de la imagen procesada.");
     if (qrCode) {
@@ -82,6 +82,6 @@ function verificarEstilo(estiloBoton) {
         qrCodeDiv.parentNode.removeChild(qrCodeDiv);
       }
     }
-    document.getElementById('resultado').classList.remove('fireworks-animation');
+    imagenResultado.classList.remove('fireworks-animation');
   }
 }
