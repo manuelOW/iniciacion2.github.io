@@ -72,16 +72,5 @@ function verificarEstilo(estiloBoton) {
       width: 200,
       height: 200
     });
-    imagenResultado.classList.add('fireworks-animation');
-  } else {
-    alert("El estilo seleccionado no coincide con el estilo de la imagen procesada.");
-    if (qrCode) {
-      qrCode.clear();
-      const qrCodeDiv = document.getElementById('qrCode');
-      if (qrCodeDiv) {
-        qrCodeDiv.parentNode.removeChild(qrCodeDiv);
-      }
-    }
-    imagenResultado.classList.remove('fireworks-animation');
   }
 }
