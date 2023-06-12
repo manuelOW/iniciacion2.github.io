@@ -54,3 +54,25 @@ button:hover {
   max-width: 100%;
   height: auto;
 }
+#resultado {
+  margin-top: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.fireworks-animation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  background-image: url('fireworks.png'); /* Cambia 'fireworks.png' por la imagen de tus fuegos artificiales */
+  animation: fireworks 2s ease-in-out;
+}
+
+@keyframes fireworks {
+  0% { transform: translate(-50%, -50%) scale(0); }
+  50% { transform: translate(-50%, -50%) scale(1.2); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
