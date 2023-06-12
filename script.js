@@ -83,3 +83,14 @@ let imagenResultado;
         }
       }
     }
+function verificarEstilo(estiloBoton) {
+  // Resto del código
+
+  if (estiloActual === estiloSeleccionado) {
+    // Resto del código
+    document.getElementById('resultado').classList.add('fireworks-animation');
+  } else {
+    // Resto del código
+    document.getElementById('resultado').classList.remove('fireworks-animation');
+  }
+}
