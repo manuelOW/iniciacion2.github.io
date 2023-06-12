@@ -83,4 +83,3 @@ particlesJS('resultado', {
   },
   retina_detect: true
 });
-
